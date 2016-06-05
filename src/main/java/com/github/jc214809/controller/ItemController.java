@@ -53,7 +53,7 @@ public class ItemController {
 	
 	@RequestMapping(value = "/markItemAsFound", method = RequestMethod.POST)
 	@ResponseBody
-	public void markItemAsFound(@RequestParam(value = "itemId") int itemId) {
-		itemService.markItemAsFound(itemId);
+	public void markItemAsFound(@RequestBody final Item item) {
+		itemService.markItemAsFound(item.getItemId());
 	}
 }
