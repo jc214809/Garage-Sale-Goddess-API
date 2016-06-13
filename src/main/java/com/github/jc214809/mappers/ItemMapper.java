@@ -11,19 +11,29 @@ import com.github.jc214809.model.Item;
 
 public interface ItemMapper { 
 	
-	@Select("SELECT * FROM items")
-	public List<Item> getItems();
+	@Select("SELECT * FROM items WHERE itemStatus='NOT FOUND'")
+	public List<Item> getNotFoundItems();
 	
-	@Insert("INSERT INTO `items`(`itemTitle`, `itemDescription`, `itemPriceRange`, `itemRequester`) VALUES (#{itemTitle},#{itemDescription},#{itemPriceRange},#{itemRequester})")
+	@Select("SELECT * FROM items WHERE itemStatus='FOUND'")
+	public List<Item> getFoundItems();
+	
+	@Insert("INSERT INTO items(itemTitle, itemDescription, itemPriceRange, itemStatus, itemRequesterID, itemRequesterName, itemRequesterImageURL) VALUES (#{itemTitle},#{itemDescription},#{itemPriceRange}, 'NOT FOUND', #{itemRequesterID},#{itemRequesterName},#{itemRequesterImageURL})")
 	public void addItem(Item item);
 	
-	@Delete("Delete FROM `items` WHERE itemId = #{itemId}")
+	@Delete("Delete FROM items WHERE itemId = #{itemId}")
 	public void deleteItem(int itemId);
 	
-	@Update("UPDATE `items` SET `itemTitle`=#{itemTitle},`itemDescription`=#{itemDescription},`itemPriceRange`=#{itemPriceRange},`itemRequester`=#{itemRequester} WHERE `itemId`=#{itemId}")
+	@Update("UPDATE items SET itemTitle=#{itemTitle},itemDescription=#{itemDescription},itemPriceRange=#{itemPriceRange} WHERE itemId=#{itemId}")
 	public void editItem(Item item);
 	
-	@Update("UPDATE `items` SET `itemStatus`='Found' WHERE `itemId`=#{itemId}")
-	public void markItemAsFound(int itemId);
+	@Update("UPDATE items SET itemStatus='FOUND',itemFinderID =#{itemFinderID}, itemFindersName=#{itemFindersName}, itemFinderImageURL=#{itemFinderImageURL} WHERE itemId= #{itemId}")
+	public void markItemAsFound(Item item);
+	
+	@Update("UPDATE items SET itemStatus='NOT FOUND',itemFinderID =NULL, itemFindersName=NULL, itemFinderImageURL=NULL WHERE itemId=#{itemId}")
+	public void markItemAsNotFound(int itemId);
+	
+	@Select("SELECT DISTINCT(itemRequesterID), itemRequesterName,itemRequesterImageURL FROM items WHERE itemStatus = 'NOT FOUND'")
+	public List<Item> getUsers();
+	
 	
 }

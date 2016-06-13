@@ -14,8 +14,12 @@ public class ItemService {
 	@Autowired
 	private ItemMapper itemMapper;
 	
-	public List<Item> getItems() {
-		return itemMapper.getItems();
+	public List<Item> getNotFoundItems() {
+		return itemMapper.getNotFoundItems();
+	}
+	
+	public List<Item> getFoundItems() {
+		return itemMapper.getFoundItems();
 	}
 	
 	public void addItem(Item item) {
@@ -30,7 +34,15 @@ public class ItemService {
 		itemMapper.editItem(item);
 	}
 	
-	public void markItemAsFound(int itemId) {
-		itemMapper.markItemAsFound(itemId);
+	public void markItemAsFound(Item item) {
+		itemMapper.markItemAsFound(item);
+	}
+	
+	public void markItemAsNotFound(int itemId) {
+		itemMapper.markItemAsNotFound(itemId);
+	}
+	
+	public List<Item> getUsers() {
+		return itemMapper.getUsers();
 	}
 }
