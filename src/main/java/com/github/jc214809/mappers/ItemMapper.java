@@ -32,7 +32,7 @@ public interface ItemMapper {
 	@Update("UPDATE items SET itemStatus='NOT FOUND',itemFinderID =NULL, itemFindersName=NULL, itemFinderImageURL=NULL WHERE itemId=#{itemId}")
 	public void markItemAsNotFound(int itemId);
 	
-	@Select("SELECT DISTINCT(itemRequesterID), itemRequesterName,itemRequesterImageURL FROM items WHERE itemStatus = 'NOT FOUND'")
+	@Select("SELECT `itemRequesterID`, `itemRequesterName`, `itemRequesterImageURL` FROM items WHERE itemStatus = 'NOT FOUND' group by `itemRequesterID`")
 	public List<Item> getUsers();
 	
 	
